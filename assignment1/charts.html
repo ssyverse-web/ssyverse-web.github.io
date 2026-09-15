@@ -9,6 +9,7 @@
 
     <title>Assignment 1: Human Genetic Data</title>
 
+
     <!-- Vega -->
     <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
 
@@ -37,13 +38,13 @@
         }
 
         h2 {
-            margin-top: 50px;
+            margin-top: 55px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 8px;
         }
 
         h3 {
-            margin-top: 35px;
+            margin-top: 30px;
             margin-bottom: 10px;
         }
 
@@ -75,7 +76,7 @@
         }
 
         .back-link {
-            margin-top: 50px;
+            margin-top: 60px;
             display: block;
         }
 
@@ -107,9 +108,12 @@
     <main>
 
 
-        <!-- About the Analysis -->
+        <!-- ========================================= -->
+        <!-- ABOUT THE ANALYSIS -->
+        <!-- ========================================= -->
 
         <h2>About the Analysis</h2>
+
 
         <p>
             Principal component analysis (PCA) is a dimensionality
@@ -117,9 +121,10 @@
             a smaller number of new variables called principal
             components. The first principal component captures the
             greatest amount of variation in the data, while the
-            second captures the greatest remaining variation subject
-            to being orthogonal to the first.
+            second captures the greatest remaining variation
+            subject to being orthogonal to the first.
         </p>
+
 
         <p>
             In genetic data, PCA can summarize patterns of variation
@@ -132,13 +137,17 @@
         </p>
 
 
-        <!-- Visualization 1 -->
+        <!-- ========================================= -->
+        <!-- VISUALIZATION 1 -->
+        <!-- ========================================= -->
 
         <h2>Visualization 1</h2>
 
         <h3>PC1 vs. PC2</h3>
 
+
         <div id="vis1" class="figure"></div>
+
 
         <p class="description">
             This scatterplot displays the first two principal
@@ -151,13 +160,17 @@
         </p>
 
 
-        <!-- Visualization 2 -->
+        <!-- ========================================= -->
+        <!-- VISUALIZATION 2 -->
+        <!-- ========================================= -->
 
         <h2>Visualization 2</h2>
 
         <h3>PC1 vs. PC2 with Ancestry</h3>
 
+
         <div id="vis2" class="figure"></div>
+
 
         <p class="description">
             This visualization retains the PC1 and PC2 axes from the
@@ -168,6 +181,58 @@
             the additional color encoding makes the relationship
             between ancestry categories and the observed clustering
             easier to see.
+        </p>
+
+
+        <!-- ========================================= -->
+        <!-- VISUALIZATION 3 -->
+        <!-- ========================================= -->
+
+        <h2>Visualization 3</h2>
+
+        <h3>PC1 vs. PC2 with Ancestry and |PC3|</h3>
+
+
+        <div id="vis3" class="figure"></div>
+
+
+        <p class="description">
+            This visualization retains the PC1 and PC2 axes and the
+            ancestry color encoding while adding the magnitude of
+            PC3 as point size. PC3 represents a third direction of
+            variation that is not displayed in the first two
+            components, allowing an additional quantitative
+            dimension to be shown simultaneously. Larger circles
+            represent observations with greater absolute PC3
+            values, while the tooltip provides the original signed
+            PC3 value. The additional encoding provides more
+            information but can also make individual observations
+            somewhat more difficult to distinguish.
+        </p>
+
+
+        <!-- ========================================= -->
+        <!-- VISUALIZATION 4 -->
+        <!-- ========================================= -->
+
+        <h2>Visualization 4</h2>
+
+        <h3>PC1 vs. PC2 by Ancestry</h3>
+
+
+        <div id="vis4" class="figure"></div>
+
+
+        <p class="description">
+            This visualization separates the observations into
+            five ancestry-specific panels while retaining PC1 and
+            PC2 as the horizontal and vertical axes. Unlike the
+            color-based representation in Visualization 2, this
+            design reduces visual overlap between ancestry groups
+            and makes the distribution within each group easier
+            to examine. The panels use identical PC1 and PC2
+            scales so that the positions and spreads of the groups
+            can be compared directly.
         </p>
 
 
@@ -182,10 +247,11 @@
     <script>
 
 
-        // --------------------------------------------------
-        // Visualization 1
-        // PC1 on the x-axis and PC2 on the y-axis.
-        // --------------------------------------------------
+        // =====================================================
+        // VISUALIZATION 1
+        // PC1 → x
+        // PC2 → y
+        // =====================================================
 
         const spec1 = {
 
@@ -210,13 +276,19 @@
                 "x": {
                     "field": "PC1",
                     "type": "quantitative",
-                    "title": "PC1"
+                    "title": "PC1",
+                    "scale": {
+                        "domain": [-14, 6]
+                    }
                 },
 
                 "y": {
                     "field": "PC2",
                     "type": "quantitative",
-                    "title": "PC2"
+                    "title": "PC2",
+                    "scale": {
+                        "domain": [-8, 8]
+                    }
                 }
 
             }
@@ -224,10 +296,12 @@
         };
 
 
-        // --------------------------------------------------
-        // Visualization 2
-        // Same axes, with Ancestry represented by color.
-        // --------------------------------------------------
+        // =====================================================
+        // VISUALIZATION 2
+        // PC1 → x
+        // PC2 → y
+        // Ancestry → color
+        // =====================================================
 
         const spec2 = {
 
@@ -252,13 +326,19 @@
                 "x": {
                     "field": "PC1",
                     "type": "quantitative",
-                    "title": "PC1"
+                    "title": "PC1",
+                    "scale": {
+                        "domain": [-14, 6]
+                    }
                 },
 
                 "y": {
                     "field": "PC2",
                     "type": "quantitative",
-                    "title": "PC2"
+                    "title": "PC2",
+                    "scale": {
+                        "domain": [-8, 8]
+                    }
                 },
 
                 "color": {
@@ -272,11 +352,256 @@
         };
 
 
-        // Render the two visualizations.
+        // =====================================================
+        // VISUALIZATION 3
+        // PC1 → x
+        // PC2 → y
+        // Ancestry → color
+        // |PC3| → size
+        // =====================================================
+
+        const spec3 = {
+
+            "$schema":
+                "https://vega.github.io/schema/vega-lite/v6.json",
+
+            "width": 600,
+            "height": 400,
+
+            "data": {
+                "url": "genetic_data_train.csv"
+            },
+
+            "transform": [
+
+                {
+                    "calculate": "abs(datum.PC3)",
+                    "as": "PC3_size"
+                }
+
+            ],
+
+            "mark": {
+                "type": "point",
+                "tooltip": true,
+                "opacity": 0.7
+            },
+
+            "encoding": {
+
+                "x": {
+                    "field": "PC1",
+                    "type": "quantitative",
+                    "title": "PC1",
+                    "scale": {
+                        "domain": [-14, 6]
+                    }
+                },
+
+                "y": {
+                    "field": "PC2",
+                    "type": "quantitative",
+                    "title": "PC2",
+                    "scale": {
+                        "domain": [-8, 8]
+                    }
+                },
+
+                "color": {
+                    "field": "Ancestry",
+                    "type": "nominal",
+                    "title": "Ancestry"
+                },
+
+                "size": {
+                    "field": "PC3_size",
+                    "type": "quantitative",
+                    "title": "|PC3|",
+                    "scale": {
+                        "range": [20, 250]
+                    }
+                },
+
+                "tooltip": [
+
+                    {
+                        "field": "PC1",
+                        "type": "quantitative",
+                        "title": "PC1"
+                    },
+
+                    {
+                        "field": "PC2",
+                        "type": "quantitative",
+                        "title": "PC2"
+                    },
+
+                    {
+                        "field": "PC3",
+                        "type": "quantitative",
+                        "title": "PC3"
+                    },
+
+                    {
+                        "field": "Ancestry",
+                        "type": "nominal",
+                        "title": "Ancestry"
+                    }
+
+                ]
+
+            }
+
+        };
+
+
+        // =====================================================
+        // VISUALIZATION 4
+        // PC1 → x
+        // PC2 → y
+        // Separate panel for each ancestry
+        // =====================================================
+
+
+        function createAncestryPanel(ancestry) {
+
+            return {
+
+                "width": 250,
+
+                "height": 220,
+
+                "title": {
+                    "text": ancestry,
+                    "anchor": "middle",
+                    "fontSize": 14,
+                    "fontWeight": "normal",
+                    "offset": 8
+                },
+
+                "data": {
+                    "url": "genetic_data_train.csv"
+                },
+
+                "transform": [
+
+                    {
+                        "filter":
+                            "datum.Ancestry === '" + ancestry + "'"
+                    }
+
+                ],
+
+                "mark": {
+                    "type": "point",
+                    "tooltip": true,
+                    "opacity": 0.75
+                },
+
+                "encoding": {
+
+                    "x": {
+                        "field": "PC1",
+                        "type": "quantitative",
+                        "title": "PC1",
+                        "scale": {
+                            "domain": [-14, 6]
+                        }
+                    },
+
+                    "y": {
+                        "field": "PC2",
+                        "type": "quantitative",
+                        "title": "PC2",
+                        "scale": {
+                            "domain": [-8, 8]
+                        }
+                    },
+
+                    "tooltip": [
+
+                        {
+                            "field": "PC1",
+                            "type": "quantitative",
+                            "title": "PC1"
+                        },
+
+                        {
+                            "field": "PC2",
+                            "type": "quantitative",
+                            "title": "PC2"
+                        },
+
+                        {
+                            "field": "Ancestry",
+                            "type": "nominal",
+                            "title": "Ancestry"
+                        }
+
+                    ]
+
+                }
+
+            };
+
+        }
+
+
+        const spec4 = {
+
+            "$schema":
+                "https://vega.github.io/schema/vega-lite/v6.json",
+
+            "vconcat": [
+
+                {
+
+                    "hconcat": [
+
+                        createAncestryPanel("African"),
+
+                        createAncestryPanel("EastAsian"),
+
+                        createAncestryPanel("European")
+
+                    ],
+
+                    "spacing": 20
+
+                },
+
+                {
+
+                    "hconcat": [
+
+                        createAncestryPanel("NativeAmerican"),
+
+                        createAncestryPanel("Oceanian")
+
+                    ],
+
+                    "spacing": 20
+
+                }
+
+            ],
+
+            "spacing": 20
+
+        };
+
+
+        // =====================================================
+        // RENDER ALL FOUR VISUALIZATIONS
+        // =====================================================
 
         vegaEmbed("#vis1", spec1);
 
         vegaEmbed("#vis2", spec2);
+
+        vegaEmbed("#vis3", spec3);
+
+        vegaEmbed("#vis4", spec4);
 
 
     </script>
