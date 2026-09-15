@@ -44,7 +44,7 @@
 
         h3 {
             margin-top: 35px;
-            margin-bottom: 5px;
+            margin-bottom: 10px;
         }
 
         p {
@@ -58,7 +58,7 @@
         }
 
         .figure {
-            margin: 30px 0 50px 0;
+            margin: 25px 0 35px 0;
         }
 
         .description {
@@ -107,6 +107,8 @@
     <main>
 
 
+        <!-- About the Analysis -->
+
         <h2>About the Analysis</h2>
 
         <p>
@@ -116,7 +118,7 @@
             components. The first principal component captures the
             greatest amount of variation in the data, while the
             second captures the greatest remaining variation subject
-            to being independent of the first.
+            to being orthogonal to the first.
         </p>
 
         <p>
@@ -129,6 +131,8 @@
             clusters.
         </p>
 
+
+        <!-- Visualization 1 -->
 
         <h2>Visualization 1</h2>
 
@@ -147,6 +151,26 @@
         </p>
 
 
+        <!-- Visualization 2 -->
+
+        <h2>Visualization 2</h2>
+
+        <h3>PC1 vs. PC2 with Ancestry</h3>
+
+        <div id="vis2" class="figure"></div>
+
+        <p class="description">
+            This visualization retains the PC1 and PC2 axes from the
+            first plot but adds ancestry as a color encoding. This
+            makes it easier to identify how observations belonging
+            to different ancestry categories are distributed across
+            principal-component space. Compared with the first plot,
+            the additional color encoding makes the relationship
+            between ancestry categories and the observed clustering
+            easier to see.
+        </p>
+
+
     </main>
 
 
@@ -157,10 +181,19 @@
 
     <script>
 
+
+        // --------------------------------------------------
+        // Visualization 1
+        // PC1 on the x-axis and PC2 on the y-axis.
+        // --------------------------------------------------
+
         const spec1 = {
 
             "$schema":
                 "https://vega.github.io/schema/vega-lite/v6.json",
+
+            "width": 600,
+            "height": 400,
 
             "data": {
                 "url": "genetic_data_train.csv"
@@ -191,7 +224,60 @@
         };
 
 
+        // --------------------------------------------------
+        // Visualization 2
+        // Same axes, with Ancestry represented by color.
+        // --------------------------------------------------
+
+        const spec2 = {
+
+            "$schema":
+                "https://vega.github.io/schema/vega-lite/v6.json",
+
+            "width": 600,
+            "height": 400,
+
+            "data": {
+                "url": "genetic_data_train.csv"
+            },
+
+            "mark": {
+                "type": "point",
+                "tooltip": true,
+                "opacity": 0.7
+            },
+
+            "encoding": {
+
+                "x": {
+                    "field": "PC1",
+                    "type": "quantitative",
+                    "title": "PC1"
+                },
+
+                "y": {
+                    "field": "PC2",
+                    "type": "quantitative",
+                    "title": "PC2"
+                },
+
+                "color": {
+                    "field": "Ancestry",
+                    "type": "nominal",
+                    "title": "Ancestry"
+                }
+
+            }
+
+        };
+
+
+        // Render the two visualizations.
+
         vegaEmbed("#vis1", spec1);
+
+        vegaEmbed("#vis2", spec2);
+
 
     </script>
 
