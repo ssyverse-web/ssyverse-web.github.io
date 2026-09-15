@@ -2,35 +2,67 @@
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Assignment 1: Human Genetic Data</title>
 
+    <!-- Vega -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+
+    <!-- Vega-Lite -->
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
+
+    <!-- Vega-Embed -->
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+
     <style>
+
         body {
             font-family: Arial, sans-serif;
-            max-width: 900px;
+            max-width: 1000px;
             margin: 0 auto;
-            padding: 60px 30px;
+            padding: 50px 30px;
             line-height: 1.6;
             color: #222;
             background: #ffffff;
         }
 
         h1 {
-            font-size: 2.2rem;
-            margin-bottom: 10px;
+            font-size: 2.3rem;
+            margin-bottom: 5px;
         }
 
         h2 {
-            margin-top: 45px;
+            margin-top: 50px;
             border-bottom: 1px solid #ddd;
             padding-bottom: 8px;
         }
 
+        h3 {
+            margin-top: 35px;
+            margin-bottom: 5px;
+        }
+
         p {
-            max-width: 750px;
+            max-width: 800px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.1rem;
+            margin-top: 0;
+        }
+
+        .figure {
+            margin: 30px 0 50px 0;
+        }
+
+        .description {
+            max-width: 800px;
         }
 
         a {
@@ -41,29 +73,128 @@
         a:hover {
             text-decoration: underline;
         }
+
+        .back-link {
+            margin-top: 50px;
+            display: block;
+        }
+
     </style>
+
 </head>
+
 
 <body>
 
-    <h1>Assignment 1: Human Genetic Data</h1>
 
-    <p>
-        Interactive visualizations of human genetic data using
-        principal component analysis and Vega-Lite.
-    </p>
+    <header>
 
-    <h2>About this project</h2>
+        <h1>Assignment 1: Human Genetic Data</h1>
 
-    <p>
-        This project examines patterns of genetic variation using
-        principal component analysis (PCA) and interactive data
-        visualizations.
-    </p>
+        <p class="subtitle">
+            Data Visualization Portfolio · DSC 502
+        </p>
 
-    <p>
+        <p>
+            This project explores patterns of genetic variation using
+            principal component analysis (PCA) and interactive
+            Vega-Lite visualizations.
+        </p>
+
+    </header>
+
+
+    <main>
+
+
+        <h2>About the Analysis</h2>
+
+        <p>
+            Principal component analysis (PCA) is a dimensionality
+            reduction technique that transforms many variables into
+            a smaller number of new variables called principal
+            components. The first principal component captures the
+            greatest amount of variation in the data, while the
+            second captures the greatest remaining variation subject
+            to being independent of the first.
+        </p>
+
+        <p>
+            In genetic data, PCA can summarize patterns of variation
+            across many genetic markers. Individuals with similar
+            genetic profiles tend to occupy nearby positions in
+            principal-component space. When genetic variation is
+            associated with population history or ancestry, groups
+            of individuals may therefore form distinguishable
+            clusters.
+        </p>
+
+
+        <h2>Visualization 1</h2>
+
+        <h3>PC1 vs. PC2</h3>
+
+        <div id="vis1" class="figure"></div>
+
+        <p class="description">
+            This scatterplot displays the first two principal
+            components for all observations in the dataset. Each
+            point represents an individual, with PC1 and PC2 mapped
+            to the horizontal and vertical axes. The visualization
+            provides a baseline view of the distribution of the
+            observations in principal-component space without
+            introducing any additional categorical encoding.
+        </p>
+
+
+    </main>
+
+
+    <p class="back-link">
         <a href="../index.html">← Back to portfolio</a>
     </p>
+
+
+    <script>
+
+        const spec1 = {
+
+            "$schema":
+                "https://vega.github.io/schema/vega-lite/v6.json",
+
+            "data": {
+                "url": "genetic_data_train.csv"
+            },
+
+            "mark": {
+                "type": "point",
+                "tooltip": true,
+                "opacity": 0.7
+            },
+
+            "encoding": {
+
+                "x": {
+                    "field": "PC1",
+                    "type": "quantitative",
+                    "title": "PC1"
+                },
+
+                "y": {
+                    "field": "PC2",
+                    "type": "quantitative",
+                    "title": "PC2"
+                }
+
+            }
+
+        };
+
+
+        vegaEmbed("#vis1", spec1);
+
+    </script>
+
 
 </body>
 
