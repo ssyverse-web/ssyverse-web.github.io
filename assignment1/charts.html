@@ -2,68 +2,77 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Assignment 1: Human Genetic Data</title>
 
-
-    <!-- Vega -->
+    <!-- Vega, Vega-Lite, and Vega-Embed -->
     <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
-
-    <!-- Vega-Lite -->
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
-
-    <!-- Vega-Embed -->
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
 
-
     <style>
-
         body {
             font-family: Arial, sans-serif;
-            max-width: 1000px;
+            max-width: 1050px;
             margin: 0 auto;
-            padding: 50px 30px;
-            line-height: 1.6;
+            padding: 50px 30px 70px;
+            line-height: 1.65;
             color: #222;
-            background: #ffffff;
+            background: #fff;
+        }
+
+        header {
+            margin-bottom: 20px;
         }
 
         h1 {
-            font-size: 2.3rem;
-            margin-bottom: 5px;
+            font-size: 2.35rem;
+            line-height: 1.2;
+            margin: 0 0 8px;
         }
 
         h2 {
             margin-top: 55px;
-            border-bottom: 1px solid #ddd;
+            margin-bottom: 20px;
             padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.65rem;
         }
 
         h3 {
-            margin-top: 30px;
-            margin-bottom: 10px;
+            margin: 30px 0 10px;
+            font-size: 1.25rem;
         }
 
         p {
-            max-width: 800px;
+            max-width: 850px;
+            margin: 0 0 18px;
         }
 
         .subtitle {
             color: #666;
-            font-size: 1.1rem;
-            margin-top: 0;
+            font-size: 1.08rem;
+            margin: 0 0 20px;
         }
 
         .figure {
-            margin: 25px 0 35px 0;
+            margin: 25px 0 20px;
+            overflow-x: auto;
         }
 
         .description {
-            max-width: 800px;
+            max-width: 850px;
+            margin-bottom: 30px;
+        }
+
+        .source-note {
+            font-size: 0.95rem;
+        }
+
+        .back-link {
+            margin-top: 60px;
         }
 
         a {
@@ -75,18 +84,13 @@
             text-decoration: underline;
         }
 
-        .back-link {
-            margin-top: 60px;
-            display: block;
+        code {
+            font-family: Consolas, "Courier New", monospace;
         }
-
     </style>
-
 </head>
 
-
 <body>
-
 
     <header>
 
@@ -107,33 +111,91 @@
 
     <main>
 
-
         <!-- ========================================= -->
-        <!-- ABOUT THE ANALYSIS -->
+        <!-- DATASET -->
         <!-- ========================================= -->
 
-        <h2>About the Analysis</h2>
-
+        <h2>Dataset</h2>
 
         <p>
-            Principal component analysis (PCA) is a dimensionality
-            reduction technique that transforms many variables into
-            a smaller number of new variables called principal
-            components. The first principal component captures the
-            greatest amount of variation in the data, while the
-            second captures the greatest remaining variation
-            subject to being orthogonal to the first.
+            This project uses the
+            <a href="https://www.kaggle.com/datasets/i191796majid/human-genetic-data"
+               target="_blank"
+               rel="noopener noreferrer">
+                Human Genetic Data
+            </a>
+            dataset available from Kaggle. The version used here,
+            <code>genetic_data_train.csv</code>, contains 183 observations
+            and 11 columns: ten precomputed principal-component scores
+            (PC1–PC10) and a categorical <code>Ancestry</code> variable.
+        </p>
+
+        <p>
+            Five ancestry categories are represented in the data:
+            African, EastAsian, European, NativeAmerican, and Oceanian.
+            This portfolio focuses primarily on PC1 and PC2, with PC3
+            introduced in the third visualization. The ancestry variable
+            is used as a categorical label for comparing how observations
+            are distributed in principal-component space.
+        </p>
+
+        <p class="source-note">
+            <strong>Source:</strong>
+            <a href="https://www.kaggle.com/datasets/i191796majid/human-genetic-data"
+               target="_blank"
+               rel="noopener noreferrer">
+                Kaggle — Human Genetic Data
+            </a>
         </p>
 
 
+        <!-- ========================================= -->
+        <!-- METHODOLOGY -->
+        <!-- ========================================= -->
+
+        <h2>Methodology: Principal Component Analysis</h2>
+
         <p>
-            In genetic data, PCA can summarize patterns of variation
-            across many genetic markers. Individuals with similar
-            genetic profiles tend to occupy nearby positions in
-            principal-component space. When genetic variation is
-            associated with population history or ancestry, groups
-            of individuals may therefore form distinguishable
-            clusters.
+            Principal component analysis (PCA) is a dimensionality
+            reduction technique used to summarize variation across
+            many variables using a smaller number of new variables
+            called principal components. Mathematically, PCA identifies
+            orthogonal directions in the data that successively account
+            for as much variation as possible. PC1 is the direction
+            explaining the greatest amount of variation, PC2 explains
+            the greatest remaining variation subject to being orthogonal
+            to PC1, and subsequent components continue this process.
+        </p>
+
+        <p>
+            In genetic applications, the original variables may consist
+            of measurements at many genetic markers, such as
+            single-nucleotide polymorphisms (SNPs). PCA transforms this
+            high-dimensional genetic information into coordinates for
+            each individual on the principal-component axes. Individuals
+            with similar genetic profiles tend to have similar
+            coordinates and therefore appear close together when plotted
+            in principal-component space. PCA can consequently be useful
+            for exploratory visualization of population structure and
+            patterns of genetic similarity.
+        </p>
+
+        <p>
+            An important qualification is that the principal components
+            themselves do not inherently represent particular ancestries
+            or biological processes. Their interpretation depends on the
+            genetic variables, individuals, preprocessing, and sampling
+            scheme used to calculate them. Other factors, including
+            relatedness, linkage disequilibrium, uneven sampling, and
+            technical artifacts, can also influence PCA patterns.
+        </p>
+
+        <p>
+            For this project, I use the principal-component scores
+            supplied in the Kaggle dataset rather than recomputing PCA
+            from an underlying genotype matrix. The visualizations
+            therefore examine the distribution of the provided PC scores
+            and their relationship to the dataset's ancestry labels.
         </p>
 
 
@@ -145,18 +207,19 @@
 
         <h3>PC1 vs. PC2</h3>
 
-
         <div id="vis1" class="figure"></div>
 
-
         <p class="description">
-            This scatterplot displays the first two principal
-            components for all observations in the dataset. Each
-            point represents an individual, with PC1 and PC2 mapped
-            to the horizontal and vertical axes. The visualization
-            provides a baseline view of the distribution of the
-            observations in principal-component space without
-            introducing any additional categorical encoding.
+            This scatterplot provides a baseline view of the first two
+            principal components. Each point represents one observation,
+            with PC1 mapped to the x-axis and PC2 mapped to the y-axis.
+            The concentration of observations into several regions of
+            principal-component space indicates that the dataset contains
+            substantial structure in the genetic variation summarized by
+            these two axes. At this stage, however, the plot does not tell
+            us what those clusters correspond to biologically; it simply
+            reveals the underlying structure without using the ancestry
+            labels.
         </p>
 
 
@@ -168,19 +231,21 @@
 
         <h3>PC1 vs. PC2 with Ancestry</h3>
 
-
         <div id="vis2" class="figure"></div>
 
-
         <p class="description">
-            This visualization retains the PC1 and PC2 axes from the
-            first plot but adds ancestry as a color encoding. This
-            makes it easier to identify how observations belonging
-            to different ancestry categories are distributed across
-            principal-component space. Compared with the first plot,
-            the additional color encoding makes the relationship
-            between ancestry categories and the observed clustering
-            easier to see.
+            This visualization retains the PC1 and PC2 axes but adds
+            <code>Ancestry</code> as a categorical color encoding. The
+            ancestry labels make it apparent that much of the clustering
+            visible in the first plot corresponds to differences among
+            the ancestry categories represented in the dataset. In
+            genetic terms, this illustrates how variation summarized by
+            the principal components can be associated with population
+            structure. Because ancestry is supplied as a label in the
+            dataset, however, the PCA itself should not be interpreted as
+            having independently discovered these categories. Instead,
+            the plot allows the genetic structure revealed by PCA to be
+            compared with the labels attached to the observations.
         </p>
 
 
@@ -190,24 +255,22 @@
 
         <h2>Visualization 3</h2>
 
-        <h3>PC1 vs. PC2 with Ancestry and |PC3|</h3>
-
+        <h3>PC1 vs. PC2 with Ancestry and PC3 Magnitude</h3>
 
         <div id="vis3" class="figure"></div>
 
-
         <p class="description">
-            This visualization retains the PC1 and PC2 axes and the
-            ancestry color encoding while adding the magnitude of
-            PC3 as point size. PC3 represents a third direction of
-            variation that is not displayed in the first two
-            components, allowing an additional quantitative
-            dimension to be shown simultaneously. Larger circles
-            represent observations with greater absolute PC3
-            values, while the tooltip provides the original signed
-            PC3 value. The additional encoding provides more
-            information but can also make individual observations
-            somewhat more difficult to distinguish.
+            This visualization retains the PC1–PC2 representation and
+            the ancestry color encoding while adding the magnitude of
+            PC3 as point size. PC3 represents a third axis of variation
+            that is not visible in the first two-dimensional projection,
+            allowing an additional quantitative dimension to be shown
+            simultaneously. Larger circles represent observations with
+            greater absolute PC3 values, while the tooltip provides the
+            original signed PC3 value. The additional encoding gives a
+            richer view of the supplied PCA results, although the larger
+            symbols can overlap and make individual observations somewhat
+            more difficult to distinguish.
         </p>
 
 
@@ -219,22 +282,46 @@
 
         <h3>PC1 vs. PC2 by Ancestry</h3>
 
-
         <div id="vis4" class="figure"></div>
-
 
         <p class="description">
             This visualization separates the observations into
-            five ancestry-specific panels while retaining PC1 and
-            PC2 as the horizontal and vertical axes. Unlike the
-            color-based representation in Visualization 2, this
-            design reduces visual overlap between ancestry groups
-            and makes the distribution within each group easier
-            to examine. The panels use identical PC1 and PC2
-            scales so that the positions and spreads of the groups
-            can be compared directly.
+            ancestry-specific panels while retaining PC1 and PC2 as the
+            horizontal and vertical axes. Unlike the color-based
+            representation in Visualization 2, this design reduces
+            visual overlap between ancestry groups and makes the
+            distribution within each group easier to examine. The panels
+            use identical PC1 and PC2 scales so that the positions,
+            spread, and potential outlying observations of the groups can
+            be compared directly.
         </p>
 
+
+        <!-- ========================================= -->
+        <!-- INTERPRETATION AND LIMITATIONS -->
+        <!-- ========================================= -->
+
+        <h2>Interpretation and Limitations</h2>
+
+        <p>
+            These visualizations show patterns in the principal-component
+            scores supplied by the dataset and their relationship to the
+            provided ancestry labels. They are useful for exploratory
+            visualization of genetic structure, but PCA is a descriptive
+            dimension-reduction method rather than, by itself, a complete
+            model of population history or ancestry.
+        </p>
+
+        <p>
+            Different choices of genetic markers, preprocessing, sampling,
+            and PCA methodology can affect the resulting axes and patterns.
+            In addition, the present dataset provides PC scores rather than
+            the underlying genotype matrix, and information about the
+            original PCA procedure is limited. The figures should therefore
+            be interpreted as visualizations of the supplied PCA results
+            rather than as an independently reproduced population-genetic
+            analysis.
+        </p>
 
     </main>
 
@@ -245,6 +332,20 @@
 
 
     <script>
+
+        // =====================================================
+        // SHARED SETTINGS
+        // =====================================================
+
+        const dataURL = "genetic_data_train.csv";
+
+        const pc1Scale = {
+            "domain": [-14, 6]
+        };
+
+        const pc2Scale = {
+            "domain": [-8, 8]
+        };
 
 
         // =====================================================
@@ -262,7 +363,7 @@
             "height": 400,
 
             "data": {
-                "url": "genetic_data_train.csv"
+                "url": dataURL
             },
 
             "mark": {
@@ -277,18 +378,14 @@
                     "field": "PC1",
                     "type": "quantitative",
                     "title": "PC1",
-                    "scale": {
-                        "domain": [-14, 6]
-                    }
+                    "scale": pc1Scale
                 },
 
                 "y": {
                     "field": "PC2",
                     "type": "quantitative",
                     "title": "PC2",
-                    "scale": {
-                        "domain": [-8, 8]
-                    }
+                    "scale": pc2Scale
                 }
 
             }
@@ -312,7 +409,7 @@
             "height": 400,
 
             "data": {
-                "url": "genetic_data_train.csv"
+                "url": dataURL
             },
 
             "mark": {
@@ -327,18 +424,14 @@
                     "field": "PC1",
                     "type": "quantitative",
                     "title": "PC1",
-                    "scale": {
-                        "domain": [-14, 6]
-                    }
+                    "scale": pc1Scale
                 },
 
                 "y": {
                     "field": "PC2",
                     "type": "quantitative",
                     "title": "PC2",
-                    "scale": {
-                        "domain": [-8, 8]
-                    }
+                    "scale": pc2Scale
                 },
 
                 "color": {
@@ -369,14 +462,14 @@
             "height": 400,
 
             "data": {
-                "url": "genetic_data_train.csv"
+                "url": dataURL
             },
 
             "transform": [
 
                 {
                     "calculate": "abs(datum.PC3)",
-                    "as": "PC3_size"
+                    "as": "PC3_magnitude"
                 }
 
             ],
@@ -393,18 +486,14 @@
                     "field": "PC1",
                     "type": "quantitative",
                     "title": "PC1",
-                    "scale": {
-                        "domain": [-14, 6]
-                    }
+                    "scale": pc1Scale
                 },
 
                 "y": {
                     "field": "PC2",
                     "type": "quantitative",
                     "title": "PC2",
-                    "scale": {
-                        "domain": [-8, 8]
-                    }
+                    "scale": pc2Scale
                 },
 
                 "color": {
@@ -414,7 +503,7 @@
                 },
 
                 "size": {
-                    "field": "PC3_size",
+                    "field": "PC3_magnitude",
                     "type": "quantitative",
                     "title": "|PC3|",
                     "scale": {
@@ -457,11 +546,9 @@
 
         // =====================================================
         // VISUALIZATION 4
-        // PC1 → x
-        // PC2 → y
-        // Separate panel for each ancestry
+        // Five ancestry-specific panels.
+        // Each panel has the same fixed PC1/PC2 scales.
         // =====================================================
-
 
         function createAncestryPanel(ancestry) {
 
@@ -480,7 +567,7 @@
                 },
 
                 "data": {
-                    "url": "genetic_data_train.csv"
+                    "url": dataURL
                 },
 
                 "transform": [
@@ -504,18 +591,14 @@
                         "field": "PC1",
                         "type": "quantitative",
                         "title": "PC1",
-                        "scale": {
-                            "domain": [-14, 6]
-                        }
+                        "scale": pc1Scale
                     },
 
                     "y": {
                         "field": "PC2",
                         "type": "quantitative",
                         "title": "PC2",
-                        "scale": {
-                            "domain": [-8, 8]
-                        }
+                        "scale": pc2Scale
                     },
 
                     "tooltip": [
@@ -555,33 +638,26 @@
             "vconcat": [
 
                 {
-
                     "hconcat": [
 
                         createAncestryPanel("African"),
-
                         createAncestryPanel("EastAsian"),
-
                         createAncestryPanel("European")
 
                     ],
 
                     "spacing": 20
-
                 },
 
                 {
-
                     "hconcat": [
 
                         createAncestryPanel("NativeAmerican"),
-
                         createAncestryPanel("Oceanian")
 
                     ],
 
                     "spacing": 20
-
                 }
 
             ],
@@ -592,7 +668,7 @@
 
 
         // =====================================================
-        // RENDER ALL FOUR VISUALIZATIONS
+        // RENDER THE FOUR VISUALIZATIONS
         // =====================================================
 
         vegaEmbed("#vis1", spec1);
@@ -603,10 +679,9 @@
 
         vegaEmbed("#vis4", spec4);
 
-
     </script>
-
 
 </body>
 
 </html>
+ 
