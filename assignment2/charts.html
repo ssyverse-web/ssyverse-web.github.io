@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Portfolio 2: Redesigning a Problematic Visualization</title>
+
+    <!-- Vega -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+
+    <!-- Vega-Lite -->
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
+
+    <!-- Vega-Embed -->
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 50px 30px 70px;
+            line-height: 1.65;
+            color: #222;
+            background: #fff;
+        }
+
+
+        header {
+            margin-bottom: 25px;
+        }
+
+
+        h1 {
+            font-size: 2.35rem;
+            line-height: 1.2;
+            margin: 0 0 8px;
+        }
+
+
+        h2 {
+            margin-top: 55px;
+            margin-bottom: 20px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+            font-size: 1.65rem;
+        }
+
+
+        h3 {
+            margin: 30px 0 12px;
+            font-size: 1.25rem;
+        }
+
+
+        p {
+            max-width: 850px;
+            margin: 0 0 18px;
+        }
+
+
+        .subtitle {
+            color: #666;
+            font-size: 1.08rem;
+            margin: 0 0 20px;
+        }
+
+
+        .figure {
+            margin: 25px 0 20px;
+            overflow-x: auto;
+        }
+
+
+        .original-image {
+            display: block;
+            width: 600px;
+            max-width: 100%;
+            height: auto;
+            margin: 25px 0 15px;
+        }
+
+
+        .caption {
+            max-width: 850px;
+            font-size: 0.92rem;
+            color: #666;
+        }
+
+
+        .description {
+            max-width: 850px;
+        }
+
+
+        .source-note {
+            font-size: 0.95rem;
+        }
+
+
+        .back-link {
+            margin-top: 60px;
+        }
+
+
+        a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+        code {
+            font-family: Consolas, "Courier New", monospace;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <header>
+
+        <h1>
+            Portfolio 2: Redesigning a Problematic Visualization
+        </h1>
+
+        <p class="subtitle">
+            Data Visualization Portfolio · DSC 502
+        </p>
+
+        <p>
+            This project examines a published visualization of
+            firearm murders in Florida and redesigns it to improve
+            clarity, accuracy, and interpretability.
+        </p>
+
+    </header>
+
+
+    <main>
+
+
+        <!-- ========================================= -->
+        <!-- ORIGINAL VISUALIZATION -->
+        <!-- ========================================= -->
+
+        <h2>The Original Visualization</h2>
+
+        <h3>Gun deaths in Florida</h3>
+
+
+        <img
+            src="original_florida_firearm_murders_chart.webp"
+            alt="Original Reuters visualization showing firearm murders in Florida from 1990 to 2012"
+            class="original-image"
+        >
+
+
+        <p class="caption">
+            <strong>Original visualization:</strong>
+            Reuters graphic by C. Chan, published in connection
+            with 2014 reporting on Florida's Stand Your Ground law.
+            The graphic is reproduced here for educational critique
+            and redesign.
+        </p>
+
+
+        <h3>Problems with the original visualization</h3>
+
+
+        <p>
+            The most significant problem with the original
+            visualization is its inverted y-axis. The scale begins
+            at 0 at the top and increases downward to 1,000. As a
+            result, an increase in the number of firearm murders is
+            represented by a downward movement in the line. This
+            conflicts with the conventional interpretation of a
+            quantitative axis and makes the trend difficult to read.
+        </p>
+
+
+        <p>
+            This problem is especially apparent around 2005. The
+            number of firearm murders increased from 521 in 2005 to
+            740 in 2006 and 825 in 2007, but the original visualization
+            represents this increase as a sharp downward movement.
+            The visualization therefore makes an important change in
+            the data visually counterintuitive.
+        </p>
+
+
+        <p>
+            The original graphic also uses a large red filled area
+            that adds visual emphasis without communicating additional
+            quantitative information. In addition, the horizontal
+            axis provides only broad decade labels rather than
+            clearly identifying the individual years represented by
+            the observations.
+        </p>
+
+
+        <p>
+            Finally, the title refers to "gun deaths," while the
+            subtitle specifies the more precise measure of "murders
+            committed using firearms." The redesign uses the more
+            precise terminology to make clear what is actually being
+            measured.
+        </p>
+
+
+        <!-- ========================================= -->
+        <!-- IMPROVED VISUALIZATION -->
+        <!-- ========================================= -->
+
+        <h2>The Improved Visualization</h2>
+
+        <h3>Florida firearm murders, 1990–2012</h3>
+
+
+        <div id="vis" class="figure"></div>
+
+
+        <p class="description">
+            The redesigned visualization uses a conventional
+            time-series line chart with year on the x-axis and the
+            number of firearm murders on the y-axis. The y-axis now
+            increases upward, so increases and decreases in the data
+            correspond naturally to upward and downward movements of
+            the line. Individual years are explicitly labeled, and
+            interactive tooltips allow the reader to inspect the
+            exact value for each observation.
+        </p>
+
+
+        <p class="description">
+            The 2005 enactment of Florida's Stand Your Ground law is
+            marked with a vertical reference line so that the policy
+            event remains part of the historical context. The
+            annotation identifies the event without claiming that the
+            visualization establishes a causal relationship between
+            the law and subsequent changes in firearm murders.
+        </p>
+
+
+        <!-- ========================================= -->
+        <!-- DECISION-MAKING -->
+        <!-- ========================================= -->
+
+        <h2>Design Decisions</h2>
+
+
+        <p>
+            My primary goal was to correct the original chart's
+            inverted y-axis while preserving the underlying data.
+            I considered several possible alternatives, including a
+            bar chart, but chose a line chart because the data form an
+            annual time series and the main task is to communicate
+            changes over time. A conventional upward-increasing
+            y-axis makes the sharp rise from 521 firearm murders in
+            2005 to 740 in 2006 and 825 in 2007 immediately visible.
+        </p>
+
+
+        <p>
+            I also removed the large red area because it does not
+            provide additional quantitative information and competes
+            with the data for visual attention. I replaced the vague
+            decade labels with individual years and changed the title
+            to describe the measured quantity more precisely. I kept
+            the 2005 policy event as a neutral annotation because it is
+            relevant historical context, but I avoided presenting the
+            temporal association as evidence of causation. Overall,
+            the redesigned visualization places greater emphasis on
+            accurate quantitative interpretation and reduces unnecessary
+            visual distraction.
+        </p>
+
+
+        <!-- ========================================= -->
+        <!-- DATA AND METHODOLOGY -->
+        <!-- ========================================= -->
+
+        <h2>Data and Source</h2>
+
+
+        <p>
+            The visualization uses annual Florida firearm-murder
+            counts reported by the Florida Department of Law
+            Enforcement (FDLE). The data used for the redesign come
+            from the FDLE dataset
+            <em>Murder: Firearm Type and Rate for Florida, 1971–2020</em>.
+            For comparability with the original graphic, this project
+            uses the 1990–2012 portion of the series.
+        </p>
+
+
+        <p>
+            The original Reuters visualization also identifies the
+            Florida Department of Law Enforcement as its data source.
+            The redesign therefore retains the same underlying
+            measure while changing how the information is visually
+            represented.
+        </p>
+
+
+        <p class="source-note">
+            <strong>Data source:</strong>
+            <a href="https://www.fdle.state.fl.us/cjab/ucr/annual-reports/ucr-offense-data"
+               target="_blank"
+               rel="noopener noreferrer">
+                Florida Department of Law Enforcement — UCR Offense Data
+            </a>
+        </p>
+
+
+        <p class="source-note">
+            <strong>Original visualization:</strong>
+            <a href="https://www.businessinsider.com/gun-deaths-in-florida-increased-with-stand-your-ground-2014-2"
+               target="_blank"
+               rel="noopener noreferrer">
+                Business Insider, 2014
+            </a>
+        </p>
+
+
+        <h3>Interpretation and limitations</h3>
+
+
+        <p>
+            The redesigned figure makes the temporal pattern in
+            firearm-murder counts easier to interpret, but the chart
+            alone cannot determine why those counts changed. In
+            particular, the presence of a policy change in 2005 and a
+            subsequent increase in firearm murders does not establish
+            that the policy caused that increase. Establishing a
+            causal effect would require a research design and
+            statistical analysis that account for other factors that
+            may influence firearm-murder rates.
+        </p>
+
+
+    </main>
+
+
+    <p class="back-link">
+        <a href="../index.html">← Back to portfolio</a>
+    </p>
+
+
+    <script>
+
+
+        const spec = {
+
+            "$schema":
+                "https://vega.github.io/schema/vega-lite/v6.json",
+
+            "width": 750,
+
+            "height": 450,
+
+
+            "title": {
+
+                "text":
+                    "Florida firearm murders, 1990–2012",
+
+                "subtitle":
+                    "Reported murders committed using firearms"
+
+            },
+
+
+            "data": {
+
+                "values": [
+
+                    {
+                        "Year": 1990,
+                        "FirearmMurders": 873
+                    },
+
+                    {
+                        "Year": 1991,
+                        "FirearmMurders": 806
+                    },
+
+                    {
+                        "Year": 1992,
+                        "FirearmMurders": 789
+                    },
+
+                    {
+                        "Year": 1993,
+                        "FirearmMurders": 800
+                    },
+
+                    {
+                        "Year": 1994,
+                        "FirearmMurders": 739
+                    },
+
+                    {
+                        "Year": 1995,
+                        "FirearmMurders": 687
+                    },
+
+                    {
+                        "Year": 1996,
+                        "FirearmMurders": 668
+                    },
+
+                    {
+                        "Year": 1997,
+                        "FirearmMurders": 634
+                    },
+
+                    {
+                        "Year": 1998,
+                        "FirearmMurders": 589
+                    },
+
+                    {
+                        "Year": 1999,
+                        "FirearmMurders": 460
+                    },
+
+                    {
+                        "Year": 2000,
+                        "FirearmMurders": 499
+                    },
+
+                    {
+                        "Year": 2001,
+                        "FirearmMurders": 502
+                    },
+
+                    {
+                        "Year": 2002,
+                        "FirearmMurders": 552
+                    },
+
+                    {
+                        "Year": 2003,
+                        "FirearmMurders": 586
+                    },
+
+                    {
+                        "Year": 2004,
+                        "FirearmMurders": 555
+                    },
+
+                    {
+                        "Year": 2005,
+                        "FirearmMurders": 521
+                    },
+
+                    {
+                        "Year": 2006,
+                        "FirearmMurders": 740
+                    },
+
+                    {
+                        "Year": 2007,
+                        "FirearmMurders": 825
+                    },
+
+                    {
+                        "Year": 2008,
+                        "FirearmMurders": 780
+                    },
+
+                    {
+                        "Year": 2009,
+                        "FirearmMurders": 695
+                    },
+
+                    {
+                        "Year": 2010,
+                        "FirearmMurders": 669
+                    },
+
+                    {
+                        "Year": 2011,
+                        "FirearmMurders": 691
+                    },
+
+                    {
+                        "Year": 2012,
+                        "FirearmMurders": 722
+                    }
+
+                ]
+
+            },
+
+
+            "layer": [
+
+
+                {
+                    "mark": {
+
+                        "type": "line",
+
+                        "point": {
+                            "filled": true,
+                            "size": 65
+                        },
+
+                        "strokeWidth": 3
+
+                    },
+
+
+                    "encoding": {
+
+
+                        "x": {
+
+                            "field": "Year",
+
+                            "type": "quantitative",
+
+                            "title": "Year",
+
+                            "scale": {
+                                "domain": [1990, 2012]
+                            },
+
+                            "axis": {
+                                "values": [
+                                    1990,
+                                    1992,
+                                    1994,
+                                    1996,
+                                    1998,
+                                    2000,
+                                    2002,
+                                    2004,
+                                    2006,
+                                    2008,
+                                    2010,
+                                    2012
+                                ],
+
+                                "labelAngle": -45,
+
+                                "labelAlign": "right"
+                            }
+
+                        },
+
+
+                        "y": {
+
+                            "field": "FirearmMurders",
+
+                            "type": "quantitative",
+
+                            "title":
+                                "Number of firearm murders",
+
+                            "scale": {
+                                "domain": [0, 900],
+                                "nice": false
+                            },
+
+                            "axis": {
+                                "values": [
+                                    0,
+                                    200,
+                                    400,
+                                    600,
+                                    800
+                                ]
+                            }
+
+                        },
+
+
+                        "tooltip": [
+
+                            {
+                                "field": "Year",
+
+                                "type": "quantitative",
+
+                                "title": "Year"
+                            },
+
+                            {
+                                "field": "FirearmMurders",
+
+                                "type": "quantitative",
+
+                                "title": "Firearm murders",
+
+                                "format": ",d"
+                            }
+
+                        ]
+
+                    }
+
+                },
+
+
+                {
+                    "mark": {
+
+                        "type": "rule",
+
+                        "strokeDash": [
+                            5,
+                            5
+                        ],
+
+                        "strokeWidth": 2
+
+                    },
+
+
+                    "encoding": {
+
+                        "x": {
+                            "datum": 2005
+                        },
+
+                        "y": {
+                            "datum": 0
+                        },
+
+                        "y2": {
+                            "datum": 900
+                        }
+
+                    }
+
+                },
+
+
+                {
+                    "data": {
+
+                        "values": [
+
+                            {
+                                "Year": 2005,
+
+                                "Y": 850,
+
+                                "Label":
+                                    "2005: Florida enacted its\n“Stand Your Ground” law"
+                            }
+
+                        ]
+
+                    },
+
+
+                    "mark": {
+
+                        "type": "text",
+
+                        "align": "center",
+
+                        "baseline": "bottom",
+
+                        "fontSize": 14,
+
+                        "fontWeight": "bold"
+
+                    },
+
+
+                    "encoding": {
+
+                        "x": {
+                            "field": "Year",
+                            "type": "quantitative"
+                        },
+
+                        "y": {
+                            "field": "Y",
+                            "type": "quantitative"
+                        },
+
+                        "text": {
+                            "field": "Label"
+                        }
+
+                    }
+
+                }
+
+            ],
+
+
+            "config": {
+
+                "view": {
+                    "stroke": null
+                },
+
+                "axis": {
+                    "labelFontSize": 12,
+                    "titleFontSize": 13
+                }
+
+            }
+
+        };
+
+
+        vegaEmbed(
+            "#vis",
+            spec
+        );
+
+    </script>
+
+
+</body>
+
+</html>
