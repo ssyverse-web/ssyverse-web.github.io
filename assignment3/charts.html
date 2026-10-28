@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Portfolio 3: Simpson's Paradox</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/vega@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@7"></script>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1050px;
+            margin: 0 auto;
+            padding: 50px 30px 70px;
+            line-height: 1.65;
+            color: #222;
+            background: #fff;
+        }
+
+        h1 {
+            font-size: 2.3rem;
+            line-height: 1.2;
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            font-size: 1.65rem;
+            margin-top: 50px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        h3 {
+            font-size: 1.2rem;
+            margin-top: 30px;
+        }
+
+        p {
+            max-width: 850px;
+        }
+
+        .subtitle {
+            color: #666;
+            font-size: 1.05rem;
+        }
+
+        .figure {
+            margin: 25px 0;
+            overflow-x: auto;
+        }
+
+        .warning {
+            border-left: 3px solid #b85c38;
+            padding: 12px 18px;
+            margin: 20px 0;
+            max-width: 800px;
+            background: #faf7f5;
+        }
+
+        .caption {
+            font-size: 0.92rem;
+            color: #555;
+        }
+
+        .back-link {
+            margin-top: 55px;
+        }
+
+        a {
+            color: #0645ad;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <h1>Portfolio 3: When Accurate Data Mislead</h1>
+
+    <p class="subtitle">
+        Data Visualization Portfolio · DSC 502
+    </p>
+
+    <p>
+        This project explores Simpson's paradox through historical
+        data on graduate admissions at the University of California,
+        Berkeley. It demonstrates how aggregating accurate statistics
+        can encourage a different conclusion from examining the same
+        data within relevant subgroups.
+    </p>
+</header>
+
+<main>
+
+    <h2>Dataset and Background</h2>
+
+    <p>
+        This analysis uses the University of California, Berkeley's
+        graduate admissions data for 1973. The data record whether
+        applicants were admitted or rejected, their sex, and the
+        department to which they applied. The analysis focuses on
+        departments A through F, excluding the "Other" category.
+        Both figures use these same six departments and the same
+        underlying application counts.
+    </p>
+
+    <p>
+        <strong>Data source:</strong>
+        <a href="https://waf.cs.illinois.edu/discovery/berkeley.csv"
+           target="_blank"
+           rel="noopener noreferrer">
+            Berkeley admissions CSV
+        </a>
+        ·
+        <a href="https://search.r-project.org/R/refmans/datasets/html/UCBAdmissions.html"
+           target="_blank"
+           rel="noopener noreferrer">
+            UCBAdmissions documentation
+        </a>
+    </p>
+
+    <p>
+        Simpson's paradox describes situations in which a relationship
+        observed in aggregated data differs from the relationship
+        observed within subgroups. Here, the overall admission rate
+        is higher for male applicants, while female applicants have
+        higher admission rates in four of the six departments.
+        Differences in how applicants are distributed among
+        departments help explain this contrast.
+    </p>
+
+
+    <!-- FIGURE 1 -->
+
+    <h2>Figure 1: Overall Admission Rates</h2>
+
+    <h3>Intentionally misleading: department-level context omitted</h3>
+
+    <div class="warning">
+        <strong>INTENTIONALLY MISLEADING FIGURE.</strong>
+        The aggregate admission rates shown here are calculated
+        correctly. The misleading aspect is the omission of
+        department-level context, which can encourage readers to
+        draw an overly broad conclusion from the overall difference.
+    </div>
+
+    <div id="fig1" class="figure"></div>
+
+    <p>
+        This bar chart combines applicants from departments A through F
+        and compares the overall admission rates for male and female
+        applicants. Approximately 44.5% of male applicants were
+        admitted, compared with 30.4% of female applicants. Viewed
+        alone, the chart may suggest that male applicants consistently
+        had an advantage in admission.
+    </p>
+
+    <p>
+        The arithmetic is correct, and the vertical axis begins at
+        zero. The limitation is that the chart conceals which
+        departments applicants applied to. Because departments differ
+        substantially in their admission rates, the overall comparison
+        does not reveal what happened within each department.
+    </p>
+
+
+    <!-- FIGURE 2 -->
+
+    <h2>Figure 2: Admission Rates Within Departments</h2>
+
+    <h3>Contextualized comparison</h3>
+
+    <div id="fig2" class="figure"></div>
+
+    <p>
+        This paired dot plot separates the admission rates by
+        department while retaining the same underlying application
+        data. Each row represents one department, and the two dots
+        show the admission rates for male and female applicants.
+        The shared horizontal scale makes the differences within
+        each department straightforward to compare.
+    </p>
+
+    <p>
+        Female applicants had higher admission rates in departments
+        A, B, D, and F, while male applicants had higher rates in
+        departments C and E. This differs from the overall comparison
+        in Figure 1. The plot reveals that the aggregate rates conceal
+        meaningful differences in admission rates and applicant
+        distributions across departments.
+    </p>
+
+
+    <!-- DESIGN DECISIONS -->
+
+    <h2>Design Decisions</h2>
+
+    <p>
+        For Figure 1, I chose a simple bar chart because it makes
+        the overall difference between the two admission rates
+        immediately apparent. I deliberately designated it as
+        misleading because aggregation removes department-level
+        context, not because the values or axis are distorted.
+        This demonstrates that a visualization can use accurate
+        numbers and conventional graphical design yet still encourage
+        an incomplete interpretation when important structure is
+        omitted.
+    </p>
+
+    <p>
+        For Figure 2, I used a paired dot plot to separate the
+        comparisons by department. A grouped bar chart was another
+        reasonable option, but the dot plot makes it easy to compare
+        the positions of two admission rates along the same
+        quantitative axis without adding unnecessary filled areas.
+        Keeping the percentage scale identical across departments
+        supports direct comparison. Together, the figures illustrate
+        why the level at which data are summarized is an important
+        visualization decision.
+    </p>
+
+
+    <!-- REFLECTION -->
+
+    <h2>How Visualizations Can Mislead</h2>
+
+    <p>
+        It can be surprisingly easy to mislead readers without
+        altering a single data point. Choosing which observations
+        to aggregate, which categories to combine, and which
+        comparisons to emphasize can change the story that a chart
+        appears to tell. Figure 1 is an example: its overall
+        admission rates are correct, but the aggregation masks
+        variation among departments. A reader who sees only that
+        figure might incorrectly assume that the aggregate difference
+        describes the pattern within every department.
+    </p>
+
+    <p>
+        Readers should therefore look beyond a chart's headline and
+        ask how the data were collected, what the denominator is,
+        which groups have been combined, and whether relevant
+        subgroups show a different pattern. They should also distinguish
+        an observed association from a causal explanation. In this
+        example, the department-level comparisons offer essential
+        context, but neither figure alone establishes whether
+        discrimination occurred or explains every factor affecting
+        admissions. Good visualization should make the relevant
+        structure visible rather than encourage a conclusion that
+        the data cannot support.
+    </p>
+
+
+    <!-- SOURCES -->
+
+    <h2>Sources and Interpretation</h2>
+
+    <p>
+        The Berkeley admissions dataset is a classic example used
+        to discuss Simpson's paradox. The figures in this project
+        are based on the admission and rejection counts for
+        departments A through F. Admission rates are calculated
+        as the number admitted divided by the total number of
+        applicants in each group.
+    </p>
+
+    <p>
+        These comparisons are descriptive. They illustrate how
+        aggregated and department-specific admission rates differ,
+        but they do not by themselves establish the presence or
+        absence of discrimination or identify a causal mechanism.
+    </p>
+
+</main>
+
+<p class="back-link">
+    <a href="../index.html">← Back to portfolio</a>
+</p>
+
+
+<script>
+
+// Figure 1: aggregate counts for departments A–F.
+
+const aggregateData = [
+    {Sex: "Male", Accepted: 1198, Rejected: 1493},
+    {Sex: "Female", Accepted: 557, Rejected: 1278}
+];
+
+const departmentData = [
+    {Department: "A", Sex: "Female", Accepted: 89, Rejected: 19},
+    {Department: "A", Sex: "Male",   Accepted: 512, Rejected: 313},
+
+    {Department: "B", Sex: "Female", Accepted: 17, Rejected: 8},
+    {Department: "B", Sex: "Male",   Accepted: 353, Rejected: 207},
+
+    {Department: "C", Sex: "Female", Accepted: 202, Rejected: 391},
+    {Department: "C", Sex: "Male",   Accepted: 120, Rejected: 205},
+
+    {Department: "D", Sex: "Female", Accepted: 131, Rejected: 244},
+    {Department: "D", Sex: "Male",   Accepted: 138, Rejected: 279},
+
+    {Department: "E", Sex: "Female", Accepted: 94, Rejected: 299},
+    {Department: "E", Sex: "Male",   Accepted: 53, Rejected: 138},
+
+    {Department: "F", Sex: "Female", Accepted: 24, Rejected: 317},
+    {Department: "F", Sex: "Male",   Accepted: 22, Rejected: 351}
+];
+
+const colorScale = {
+    domain: ["Male", "Female"],
+    range: ["#3569A8", "#C16A38"]
+};
+
+
+// Aggregate comparison.
+
+const spec1 = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+
+    "width": 600,
+    "height": 350,
+
+    "title": {
+        "text": "Overall admission rates by sex",
+        "subtitle": "UC Berkeley, 1973 · Departments A–F combined",
+        "anchor": "start"
+    },
+
+    "data": {
+        "values": aggregateData
+    },
+
+    "transform": [
+        {
+            "calculate": "datum.Accepted + datum.Rejected",
+            "as": "Applicants"
+        },
+        {
+            "calculate": "100 * datum.Accepted / datum.Applicants",
+            "as": "AdmissionRate"
+        },
+        {
+            "calculate": "format(datum.AdmissionRate, '.1f') + '%'",
+            "as": "RateLabel"
+        }
+    ],
+
+    "layer": [
+        {
+            "mark": {
+                "type": "bar",
+                "tooltip": true
+            },
+
+            "encoding": {
+                "x": {
+                    "field": "Sex",
+                    "type": "nominal",
+                    "title": "Applicant sex",
+                    "sort": ["Male", "Female"],
+                    "axis": {"labelAngle": 0}
+                },
+
+                "y": {
+                    "field": "AdmissionRate",
+                    "type": "quantitative",
+                    "title": "Applicants admitted (%)",
+                    "scale": {"domain": [0, 100]},
+                    "axis": {
+                        "values": [0, 20, 40, 60, 80, 100],
+                        "labelExpr": "datum.value + '%'"
+                    }
+                },
+
+                "color": {
+                    "field": "Sex",
+                    "type": "nominal",
+                    "scale": colorScale,
+                    "legend": null
+                },
+
+                "tooltip": [
+                    {"field": "Sex", "type": "nominal", "title": "Applicant sex"},
+                    {"field": "Accepted", "type": "quantitative", "title": "Accepted"},
+                    {"field": "Applicants", "type": "quantitative", "title": "Total applicants"},
+                    {
+                        "field": "AdmissionRate",
+                        "type": "quantitative",
+                        "title": "Admission rate (%)",
+                        "format": ".1f"
+                    }
+                ]
+            }
+        },
+
+        {
+            "mark": {
+                "type": "text",
+                "dy": -10,
+                "fontSize": 14,
+                "fontWeight": "bold"
+            },
+
+            "encoding": {
+                "x": {
+                    "field": "Sex",
+                    "type": "nominal",
+                    "sort": ["Male", "Female"]
+                },
+
+                "y": {
+                    "field": "AdmissionRate",
+                    "type": "quantitative",
+                    "scale": {"domain": [0, 100]}
+                },
+
+                "text": {
+                    "field": "RateLabel",
+                    "type": "nominal"
+                }
+            }
+        }
+    ],
+
+    "config": {
+        "view": {"stroke": null},
+        "axis": {
+            "labelFontSize": 13,
+            "titleFontSize": 14
+        }
+    }
+};
+
+
+// Department-level comparison.
+
+const spec2 = {
+    "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+
+    "width": 650,
+    "height": 330,
+
+    "title": {
+        "text": "Admission rates within departments",
+        "subtitle": "UC Berkeley, 1973 · Departments A–F",
+        "anchor": "start"
+    },
+
+    "data": {
+        "values": departmentData
+    },
+
+    "transform": [
+        {
+            "calculate": "datum.Accepted + datum.Rejected",
+            "as": "Applicants"
+        },
+        {
+            "calculate": "100 * datum.Accepted / datum.Applicants",
+            "as": "AdmissionRate"
+        }
+    ],
+
+    "mark": {
+        "type": "point",
+        "filled": true,
+        "size": 150
+    },
+
+    "encoding": {
+        "x": {
+            "field": "AdmissionRate",
+            "type": "quantitative",
+            "title": "Applicants admitted (%)",
+            "scale": {"domain": [0, 100]},
+            "axis": {
+                "values": [0, 20, 40, 60, 80, 100],
+                "labelExpr": "datum.value + '%'"
+            }
+        },
+
+        "y": {
+            "field": "Department",
+            "type": "nominal",
+            "title": "Department",
+            "sort": ["A", "B", "C", "D", "E", "F"]
+        },
+
+        "yOffset": {
+            "field": "Sex",
+            "type": "nominal",
+            "sort": ["Female", "Male"]
+        },
+
+        "color": {
+            "field": "Sex",
+            "type": "nominal",
+            "title": "Applicant sex",
+            "scale": colorScale
+        },
+
+        "tooltip": [
+            {"field": "Department", "type": "nominal", "title": "Department"},
+            {"field": "Sex", "type": "nominal", "title": "Applicant sex"},
+            {"field": "Accepted", "type": "quantitative", "title": "Accepted"},
+            {"field": "Applicants", "type": "quantitative", "title": "Total applicants"},
+            {
+                "field": "AdmissionRate",
+                "type": "quantitative",
+                "title": "Admission rate (%)",
+                "format": ".1f"
+            }
+        ]
+    },
+
+    "config": {
+        "view": {"stroke": null},
+        "axis": {
+            "labelFontSize": 13,
+            "titleFontSize": 14
+        }
+    }
+};
+
+
+// Render both charts.
+
+vegaEmbed("#fig1", spec1);
+vegaEmbed("#fig2", spec2);
+
+</script>
+
+</body>
+</html>
